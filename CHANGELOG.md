@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 _Development version: 3.11.0.dev0_
 
 ### Fixed
-- **`¶` in scraped headings** — MkDocs/Sphinx append `<a class="headerlink">¶</a>` to every heading, so the `**Contents:**` list in reference files read "Equal ¶". `doc_scraper` now drops those anchors before reading heading text, in both `extract_content` and the HTML fallback.
+- **`¶` in scraped headings** — Heading can contain a headerlink sign `<a class="headerlink">¶</a>`, so the `**Contents:**` list in reference files read "Content Item ¶". `doc_scraper` now drops those anchors before reading heading text, in both `extract_content` and the HTML fallback.
 
 ## [3.10.0] - 2026-09-30
 

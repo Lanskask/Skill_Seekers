@@ -919,7 +919,7 @@ class DocToSkillConverter(SkillConverter):
         return priorities.get(language.lower(), 50)
 
     def _heading_text(self, heading: Any) -> str:
-        """Heading text without MkDocs/Sphinx ``a.headerlink`` anchors (the trailing ¶)."""
+        """Heading text without ``a.headerlink`` anchors"""
         for anchor in heading.find_all("a", class_="headerlink"):
             anchor.decompose()
         return self.clean_text(heading.get_text())
