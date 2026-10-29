@@ -1964,6 +1964,29 @@ class DocToSkillConverter(SkillConverter):
 
         return categories
 
+    def _one_category_per_page(
+        self, pages: list[dict[str, Any]]
+    ) -> dict[str, list[dict[str, Any]]]:
+        """Key each page by its own filename stem (``split_pages: true``).
+
+        The stem is the last URL path segment; the base URL itself is ``home``.
+        Colliding stems get ``-2``, ``-3``... and ``index`` is avoided because
+        ``index.md`` is the navigation file.
+        """
+        base = self.base_url.rstrip("/")
+        categories: dict[str, list[dict[str, Any]]] = {}
+        for page in pages:
+            url = page["url"].rstrip("/")
+            segment = "" if url == base else urlparse(url).path.rsplit("/", 1)[-1]
+            stem = re.sub(r"[^a-z0-9_-]+", "-", segment.lower()).strip("-") or "home"
+            if stem == "index":
+                stem = "home"
+            name, n = stem, 2
+            while name in categories:
+                name, n = f"{stem}-{n}", n + 1
+            categories[name] = [page]
+        return categories
+
     def infer_categories(self, pages: list[dict[str, Any]]) -> dict[str, list[str]]:
         """Infer categories from URL patterns (IMPROVED)"""
         url_segments: defaultdict[str, int] = defaultdict(int)
@@ -2282,7 +2305,10 @@ To refresh this skill with updated documentation:
 
         # Categorize
         logger.info("Categorizing pages...")
-        categories = self.smart_categorize(pages)
+        if self.config.get("split_pages"):
+            categories = self._one_category_per_page(pages)
+        else:
+            categories = self.smart_categorize(pages)
         logger.info("  ✓ Created %d categories\n", len(categories))
 
         # Generate quick reference
