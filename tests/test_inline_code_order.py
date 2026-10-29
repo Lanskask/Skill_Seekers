@@ -1,4 +1,4 @@
-"""Prose and code blocks must keep page order, not be split into two buckets."""
+"""Text and code blocks must keep page order, not be split into two buckets."""
 
 from pathlib import Path
 
@@ -29,7 +29,7 @@ def _pages(converter: DocToSkillConverter) -> list[dict]:
     ]
 
 
-def test_body_blocks_interleave_prose_and_code(converter: DocToSkillConverter) -> None:
+def test_body_blocks_interleave_text_and_code(converter: DocToSkillConverter) -> None:
     for page in _pages(converter):
         assert [b["type"] for b in page["body_blocks"]] == EXPECTED
         code = [b["code"] for b in page["body_blocks"] if b["type"] == "code"]
@@ -59,7 +59,7 @@ def test_page_without_body_blocks_uses_legacy_layout(converter: DocToSkillConver
         "url": URL,
         "title": "Old",
         "headings": [],
-        "content": "Legacy cached prose that is long enough to be kept.",
+        "content": "Legacy cached text that is long enough to be kept.",
         "code_samples": [{"code": "print('legacy example')", "language": "python"}],
     }
     converter.create_reference_file("old", [page])

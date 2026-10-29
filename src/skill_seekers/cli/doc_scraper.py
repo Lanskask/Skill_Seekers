@@ -518,7 +518,7 @@ class DocToSkillConverter(SkillConverter):
             if text:
                 page["headings"].append({"level": h.name, "text": text, "id": h.get("id", "")})
 
-        # Extract prose + code with language detection, in document order
+        # Extract text + code with language detection, in document order
         self._fill_body(page, main, selectors.get("code_blocks", "pre code"))
 
         # Extract patterns (NEW: common code patterns)
@@ -529,7 +529,7 @@ class DocToSkillConverter(SkillConverter):
     def _fill_body(self, page: dict[str, Any], main: Any, code_selector: str) -> None:
         """Fill ``body_blocks``, ``code_samples`` and ``content`` from one ordered walk of ``main``.
 
-        ``body_blocks`` keeps prose and code interleaved as on the page; ``content`` and
+        ``body_blocks`` keeps text and code interleaved as on the page; ``content`` and
         ``code_samples`` stay populated for consumers that read them separately.
         """
         blocks: list[dict[str, str]] = []
@@ -742,7 +742,7 @@ class DocToSkillConverter(SkillConverter):
                 - content: str - Text content from main area
                 - headings: List[Dict] - {'level': 'h2', 'text': str, 'id': str}
                 - code_samples: List[Dict] - {'code': str, 'language': str}
-                - body_blocks: List[Dict] - prose ({'type': 'text'}) and code ({'type': 'code'}) in page order
+                - body_blocks: List[Dict] - text ({'type': 'text'}) and code ({'type': 'code'}) in page order
                 - links: List - Empty (HTML links not extracted to avoid client-side routes)
                 - patterns: List - Empty (reserved for future use)
 
@@ -2055,7 +2055,7 @@ class DocToSkillConverter(SkillConverter):
                 lines.append("")
 
             if page.get("body_blocks"):
-                # Prose and code in page order
+                # Text and code in page order
                 for block in page["body_blocks"]:
                     if block["type"] == "code":
                         lines.append(f"```{block['language']}\n{block['code']}\n```\n")
