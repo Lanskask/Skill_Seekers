@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Development version: 3.11.0.dev0_
 
+### Added
+- **`split_pages` config option for the web scraper** — set `"split_pages": true` in a config and `doc_scraper` writes one reference file per scraped page (`matchers.md`, `captors.md`, the base URL as `home.md`) instead of one file per category. Colliding names get `-2`, `-3`, and `index.md` and `SKILL.md` list the page files. Off by default, so existing skills keep their category files.
+
 ## [3.10.0] - 2026-09-30
 
 **Theme:** Seeker HUD (beta) — a local web UI for the whole toolchain — plus a path-traversal security fix, three machine-readable CLI commands, an opt-in SQLite skill search index, MiniMax video input, and PDF vector-figure extraction.
